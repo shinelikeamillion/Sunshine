@@ -256,12 +256,21 @@ public class ForecaseFragment extends Fragment {
      * @param low
      * @return
      */
-    private String formatHighLows (double high, double low) {
+    private String formatHighLows (double high, double low, String unitType) {
+
+        String unit = " ˚C";
+        if (unitType.endsWith(getString(R.string.pref_units_imperial))) {
+            unit = "˚F";
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+        } else if (!unitType.endsWith(getString(R.string.pref_units_metric))) {
+            Log.d(TAG, "Unit type not found: " + unitType);
+        }
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
         String highLowStr = roundedHigh + "/" +roundedLow;
-        return highLowStr;
+        return highLowStr + unit;
     }
 
     private String[] getWeatherDataFromJson (String forecastJsonStr, int numDays)
@@ -286,6 +295,14 @@ public class ForecaseFragment extends Fragment {
         dayTime = new android.text.format.Time();
 
         String[] resultStrs = new String[numDays];
+
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(getActivity());
+        String unitType = sharedPreferences.getString(
+                getString(R.string.pref_units_key),
+                getString(R.string.pref_units_metric)
+        );
+
         for (int i = 0; i < weatherArray.length(); i++) {
             // 现在,使用 " 日期, 描述, 最高/最低 "的格式
             String day;
@@ -307,7 +324,7 @@ public class ForecaseFragment extends Fragment {
             double high = temperatureObject.getDouble(OWM_MAX);
             double low = temperatureObject.getDouble(OWM_MIN);
 
-            highAndLow = formatHighLows(high, low);
+            highAndLow = formatHighLows(high, low, unitType);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
         }
 
