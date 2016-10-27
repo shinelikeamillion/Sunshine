@@ -1,4 +1,4 @@
-package com.udacity.sunshine;
+package com.udacity.sunshine.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.udacity.sunshine.BuildConfig;
+import com.udacity.sunshine.R;
+import com.udacity.sunshine.activity.DetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -317,8 +321,8 @@ public class ForecaseFragment extends Fragment {
             dateTime = dayTime.setJulianDay(julianStartDay + i);
             day = getReadableDateString(dateTime);
 
-            JSONObject weatherObjest = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
-            description = weatherObjest.getString(OWM_DESCRIPTION);
+            JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
+            description = weatherObject.getString(OWM_DESCRIPTION);
 
             JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
             double high = temperatureObject.getDouble(OWM_MAX);

@@ -1,4 +1,4 @@
-package com.udacity.sunshine;
+package com.udacity.sunshine.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.udacity.sunshine.R;
+
 
 /**
  * 天气详情
  */
 public class DetailFragment extends Fragment {
-
-    public DetailFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

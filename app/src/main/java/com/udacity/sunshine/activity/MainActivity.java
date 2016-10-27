@@ -1,4 +1,4 @@
-package com.udacity.sunshine;
+package com.udacity.sunshine.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.udacity.sunshine.fragment.ForecaseFragment;
+import com.udacity.sunshine.R;
 
 public class MainActivity extends AppCompatActivity {
 

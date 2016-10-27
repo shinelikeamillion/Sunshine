@@ -1,10 +1,13 @@
-package com.udacity.sunshine;
+package com.udacity.sunshine.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.udacity.sunshine.fragment.DetailFragment;
+import com.udacity.sunshine.R;
 
 public class DetailActivity extends AppCompatActivity {
 
