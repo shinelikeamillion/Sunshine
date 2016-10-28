@@ -69,14 +69,14 @@ public class WeatherContract {
         public static final String COLUMN_HUMIDITY = "humidity";
 
         // Pressure is stored as a float
-        public static final String COLLUMN_PRESSURE = "pressure";
+        public static final String COLUMN_PRESSURE = "pressure";
 
         // Windspeed is stored as a float representing percentage
         public static final String COLUMN_WIND_SPEED = "wind";
 
 
         // Degress are meteorological(气象学) degress(角度) (e.g 0 is north, 180 is south) Stored as floats.
-        public static final String COLUMN_DEGRESS = "degress";
+        public static final String COLUMN_DEGREES = "degress";
 
     }
 
