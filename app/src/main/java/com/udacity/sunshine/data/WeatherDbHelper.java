@@ -25,7 +25,19 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
     // 创建数据库
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
+        // Create a table to hold locations.  A location consists of the string supplied in the
+        // location setting, the city name, and the latitude and longitude
+        final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE "
+                + LocationEntry.TABLE_NAME + " (" +
+                LocationEntry._ID + " INTEGER PRIMARY KEY," +
+                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, " +
+                LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
+                LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL, " +
+                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL " +
+                " );";
+
+        final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE "
+                + WeatherEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
                 // Unique keys will be auto-generated in either case.  But for weather
                 // forecasting, it's reasonable to assume(假定) the user will want information
@@ -35,7 +47,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
                 // the ID of the location entry associated with this weather data
                 WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
-                WeatherEntry.COLUMN_DATE + " TEXT NOT NULL, " +
+                WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, " +
                 WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
                 WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, " +
 
@@ -54,8 +66,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
                 // To assure(确保) the application have just one weather entry pre day
                 // pre location, it's created a UNIQUE constraint(约束) with REPLACE strategy(策略)
                 " UNIQUE (" + WeatherEntry.COLUMN_DATE + ", " +
-                WeatherEntry.COLUMN_LOC_KEY + " ON CONFLICT REPLACE);";
+                WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
+        db.execSQL(SQL_CREATE_LOCATION_TABLE);
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
     }
 
