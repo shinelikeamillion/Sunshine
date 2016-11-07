@@ -33,6 +33,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity"/>
         </activity>
+
+        <provider
+            android:authorities="com.udacity.sunshine.app"
+            android:name=".data.WeatherProvider"/>
     </application>
 
 </manifest>
