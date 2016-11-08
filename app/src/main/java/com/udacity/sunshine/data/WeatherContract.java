@@ -16,7 +16,7 @@ public class WeatherContract {
     // The "Content authority" is a name for the entire content provider, similar to the
     // relationship between a domain name and its website.  A convenient string to use for the
     // device.
-    public static final String CONTENT_AUTHORITY = "com.udacity.sunshine";
+    public static final String CONTENT_AUTHORITY = "com.udacity.sunshine.app";
 
     // Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
     // the content provider.
