@@ -40,7 +40,7 @@ public class TestUriMatcher extends AndroidTestCase {
     private static final Uri TEST_LOCATION_DIR = WeatherContract.LocationEntry.CONTENT_URI;
 
     /*
-        Students: This function tests that your UriMatcher returns the correct integer value
+        This function tests that your UriMatcher returns the correct integer value
         for each of the Uri types that our ContentProvider can handle.  Uncomment this when you are
         ready to test your UriMatcher.
      */

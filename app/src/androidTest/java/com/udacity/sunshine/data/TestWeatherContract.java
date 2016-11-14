@@ -19,7 +19,7 @@ import android.net.Uri;
 import android.test.AndroidTestCase;
 
 /*
-    Students: This is NOT a complete test for the WeatherContract --- just for the functions
+    This is NOT a complete test for the WeatherContract --- just for the functions
     that we expect you to write.
  */
 public class TestWeatherContract extends AndroidTestCase {
@@ -28,7 +28,7 @@ public class TestWeatherContract extends AndroidTestCase {
     private static final long TEST_WEATHER_DATE = 1419033600L;  // December 20th, 2014
 
     /*
-        Students: Uncomment this out to test your weather location function.
+        Uncomment this out to test your weather location function.
      */
     public void testBuildWeatherLocation() {
         Uri locationUri = WeatherContract.WeatherEntry.buildWeatherLocation(TEST_WEATHER_LOCATION);

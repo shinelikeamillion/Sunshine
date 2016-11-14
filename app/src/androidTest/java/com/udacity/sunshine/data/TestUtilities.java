@@ -65,7 +65,7 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: You can uncomment this helper function once you have finished creating the
+        You can uncomment this helper function once you have finished creating the
         LocationEntry part of the WeatherContract.
      */
     static ContentValues createNorthPoleLocationValues() {
@@ -80,7 +80,7 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: You can uncomment this function once you have finished creating the
+        You can uncomment this function once you have finished creating the
         LocationEntry part of the WeatherContract as well as the WeatherDbHelper.
      */
     static long insertNorthPoleLocationValues(Context context) {
@@ -99,7 +99,7 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: The functions we provide inside of TestProvider use this utility class to test
+        The functions we provide inside of TestProvider use this utility class to test
         the ContentObserver callbacks using the PollingCheck class that we grabbed from the Android
         CTS tests.
 
