@@ -1,17 +1,16 @@
 package com.udacity.sunshine.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.udacity.sunshine.fragment.ForecaseFragment;
 import com.udacity.sunshine.R;
+import com.udacity.sunshine.Utility;
+import com.udacity.sunshine.fragment.ForecastFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecaseFragment())
+                    .add(R.id.container, new ForecastFragment())
                     .commit();
         }
     }
@@ -50,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openPreferredLocationInMap() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = sharedPrefs.getString(
-                getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default)
-        );
+        String location = Utility.getPreferredLocation(this);
+
+        // Using the URI scheme for showing a location found on a map.  This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
 
         Uri geoLocation = Uri.parse("geo:0,0?")
                 .buildUpon()
