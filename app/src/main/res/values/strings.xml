@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <!-- App 名 -->
     <string name="app_name">Sunshine</string>
 
@@ -17,17 +17,26 @@
     <!-- 设置页面的相关参数 -->
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key"
-        translatable="false">location</string>
+            translatable="false">location</string>
     <string name="pref_location_default"
-        translatable="false">94043</string>
+            translatable="false">94043</string>
 
     <string name="pref_units_label">Temperature Units</string>
     <string name="pref_units_label_metric">Metric</string>
     <string name="pref_units_label_imperial">Imperial</string>
     <string name="pref_units_key"
-        translatable="false">units</string>
+            translatable="false">units</string>
     <string name="pref_units_metric"
-        translatable="false">metric</string>
+            translatable="false">metric</string>
     <string name="pref_units_imperial"
-        translatable="false">imperial</string>
+            translatable="false">imperial</string>
+
+    <!-- 友好的显示日期 -->
+    <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
+    <string name="today">Today</string>
+    <!-- Date label when displaying tomorrow's weather forecast [CHAR LIMIT=20] -->
+    <string name="tomorrow">Tomorrow</string>
+    <!-- Date format for displaying day of week and date (i.e. Mon Jun 1) [CHAR LIMIT=20] -->
+    <string name="format_full_friendly_date"><xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g></string>
+
 </resources>

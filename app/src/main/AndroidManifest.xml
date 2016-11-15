@@ -39,7 +39,7 @@
         <provider
             android:authorities="com.udacity.sunshine.app"
             android:name=".data.WeatherProvider"
-            android:enabled="false"
+            android:enabled="true"
             android:exported="false"
             android:syncable="true"/>
     </application>
