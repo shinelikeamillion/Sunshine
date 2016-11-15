@@ -133,12 +133,6 @@ public class ForecastFragment extends Fragment
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        updateWeather();
-    }
-
-    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.forecastfragment, menu);
     }
@@ -153,6 +147,12 @@ public class ForecastFragment extends Fragment
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    public void onLocationChanged () {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
     }
 
     // 更新天气
