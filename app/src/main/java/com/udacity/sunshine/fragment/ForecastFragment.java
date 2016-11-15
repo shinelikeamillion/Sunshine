@@ -15,6 +15,7 @@
  */
 package com.udacity.sunshine.fragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,11 +31,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.udacity.sunshine.R;
 import com.udacity.sunshine.Utility;
+import com.udacity.sunshine.activity.DetailActivity;
 import com.udacity.sunshine.adapter.ForecastAdapter;
+import com.udacity.sunshine.data.WeatherContract.LocationEntry;
 import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
 import com.udacity.sunshine.task.FetchWeatherTask;
 
@@ -49,6 +53,39 @@ public class ForecastFragment extends Fragment
     private ForecastAdapter mForecastAdapter;
 
     private static final int FORECAST_LOADER_ID = 0x001;
+
+    // For the forecast view we're showing only a small subset(子集) of the stored data.
+    // Specify the columns we need.
+    private static final String[] FORECAST_COLUMNS = {
+
+            // In this case the id needs to be fully qualified with a table name, since
+            // the content provider joins the location & weather tables in the background
+            // (both have an _id column)
+            // On the one hand, that's annoying.  On the other, you can search the weather table
+            // using the location set by the user, which is only in the Location table.
+            // So the convenience is worth it.
+            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATE,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
+            LocationEntry.COLUMN_LOCATION_SETTING,
+            WeatherEntry.COLUMN_WEATHER_ID,
+            LocationEntry.COLUMN_COORD_LAT,
+            LocationEntry.COLUMN_COORD_LONG
+    };
+
+    // These indices(目录) are tied(联系) to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // must change.
+    public static final int COL_WEATHER_ID = 0;
+    public static final int COL_WEATHER_DATE = 1;
+    public static final int COL_WEATHER_DESC = 2;
+    public static final int COL_WEATHER_MAX_TEMP = 3;
+    public static final int COL_WEATHER_MIN_TEMP = 4;
+    public static final int COL_LOCATION_SETTING = 5;
+    public static final int COL_WEATHER_CONDITION_ID = 6;
+    public static final int COL_COORD_LAT = 7;
+    public static final int COL_COORD_LONG = 8;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,16 +106,23 @@ public class ForecastFragment extends Fragment
         ListView listView= (ListView) rootView.findViewById(R.id.listview_forecast);
 
         listView.setAdapter(mForecastAdapter);
-        // TODO: 11/15/16 need to do some refactory 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                String forecast = mForecastAdapter.getItem(position);
-//                Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                        .putExtra(Intent.EXTRA_TEXT, forecast);
-//                startActivity(intent);
-//                }
-//            });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // CursorAdapter returns a cursor at the correct position for getItem(),
+                // or null if it cannot seek to that position.
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                    String locationSetting = Utility.getPreferredLocation(getActivity());
+
+                    Intent intent = new Intent(getActivity(), DetailActivity.class)
+                            .setData(WeatherEntry.buildWeatherLocationWithDate(
+                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
+                            ));
+                    startActivity(intent);
+                }
+                }
+            });
         return rootView;
     }
 
@@ -165,7 +209,7 @@ public class ForecastFragment extends Fragment
         return new CursorLoader(
                 getActivity(),
                 weatherForLocationUri,
-                null,
+                FORECAST_COLUMNS, // null for all
                 null,
                 null,
                 sortOrder);
