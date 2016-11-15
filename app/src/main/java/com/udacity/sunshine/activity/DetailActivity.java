@@ -25,7 +25,6 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // TODO: 2016/11/15 add share to detail
         getMenuInflater().inflate(R.menu.detail, menu);
         return super.onCreateOptionsMenu(menu);
     }

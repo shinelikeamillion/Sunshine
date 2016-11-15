@@ -11,6 +11,9 @@
     <string name="action_setting">Settings</string>
     <string name="action_map">Map Location</string>
 
+    <!-- 细节页面 -->
+    <string name="action_share">Share</string>
+
     <!-- 设置页面的相关参数 -->
     <string name="pref_location_label">Location</string>
     <string name="pref_location_key"
