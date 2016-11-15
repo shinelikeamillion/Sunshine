@@ -5,6 +5,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.view.Menu;
 
 import com.udacity.sunshine.R;
 
@@ -18,6 +19,11 @@ public class SettingsActivity extends PreferenceActivity
 
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void bindPreferenceSummaryToValue(Preference preference) {
