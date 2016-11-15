@@ -10,11 +10,11 @@
 
     <!-- Main activity theme. -->
     <style name="ForecastTheme" parent="AppTheme">
-        <item name="actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
     </style>
 
     <!-- Setting activity theme -->
     <style name="SettingsTheme" parent="AppTheme">
+        <item name="actionBarStyle">@style/Widget.AppCompat.ActionBar</item>
     </style>
 
     <!-- main activity action bar styles -->
