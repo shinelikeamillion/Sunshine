@@ -39,8 +39,13 @@
         <provider
             android:authorities="com.udacity.sunshine.app"
             android:name=".data.WeatherProvider"
+            android:enabled="false"
             android:exported="false"
             android:syncable="true"/>
     </application>
+
+    <permission android:name="com.udacity.sunshine.LICENSE_TO_KILL"
+                android:protectionLevel="dangerous"
+                android:label="Licenced to kill"/>
 
 </manifest>
