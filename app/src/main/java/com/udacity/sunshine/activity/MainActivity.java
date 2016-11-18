@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements Callback{
         } else {
             mTwoPane = false;
         }
+
+        ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_forecast);
+        forecastFragment.setmUseTodayLayout(!mTwoPane);
     }
 
     @Override
