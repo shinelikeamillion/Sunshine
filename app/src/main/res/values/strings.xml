@@ -34,7 +34,7 @@
     <!-- 友好的显示日期 -->
     <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
     <string name="today">Today</string>
-    <!-- Date label when displaying tomorrow's weather forecast [CHAR LIMIT=20] -->
+    <!-- For labeling tomorrow's forecast [CHAR LIMIT=20] -->
     <string name="tomorrow">Tomorrow</string>
     <!-- Date format for displaying day of week and date (i.e. Mon Jun 1) [CHAR LIMIT=20] -->
     <!-- xliff:g tag for insert data flexibly; s for string, d for int, f for float -->
