@@ -15,6 +15,7 @@
  */
 package com.udacity.sunshine.fragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ import com.udacity.sunshine.Utility;
 import com.udacity.sunshine.adapter.ForecastAdapter;
 import com.udacity.sunshine.data.WeatherContract.LocationEntry;
 import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
-import com.udacity.sunshine.task.FetchWeatherTask;
+import com.udacity.sunshine.service.SunshineService;
 
 
 public class ForecastFragment extends Fragment
@@ -194,11 +195,13 @@ public class ForecastFragment extends Fragment
 
     // 更新天气
     private void updateWeather() {
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-
-        String location = Utility.getPreferredLocation(getActivity());
-
-        weatherTask.execute(location);
+//        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
+//        String location = Utility.getPreferredLocation(getActivity());
+//        weatherTask.execute(location);
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+                Utility.getPreferredLocation(getActivity()));
+        getActivity().startService(intent);
     }
 
     @Override
