@@ -3,6 +3,7 @@ package com.udacity.sunshine.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements Callback{
         ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast);
         forecastFragment.setmUseTodayLayout(!mTwoPane);
+
+        getSupportActionBar().setLogo(R.drawable.ic_logo);
+        getSupportActionBar().setDisplayOptions(
+                ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_USE_LOGO);
     }
 
     @Override
