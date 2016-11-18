@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Callback{
 
         ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast);
-        forecastFragment.setmUseTodayLayout(!mTwoPane);
+        forecastFragment.setUseTodayLayout(!mTwoPane);
 
         getSupportActionBar().setLogo(R.drawable.ic_logo);
         getSupportActionBar().setDisplayOptions(
