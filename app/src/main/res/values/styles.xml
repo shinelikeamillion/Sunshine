@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ForecastListStyle">
+
+    </style>
+
     <!-- Main activity theme. -->
     <style name="ForecastTheme" parent="AppTheme">
     </style>

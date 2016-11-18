@@ -23,7 +23,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,8 +39,6 @@ import com.udacity.sunshine.data.WeatherContract.LocationEntry;
 import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
 import com.udacity.sunshine.task.FetchWeatherTask;
 
-import java.text.SimpleDateFormat;
-
 
 public class ForecastFragment extends Fragment
         implements LoaderCallbacks<Cursor> {
@@ -49,6 +46,11 @@ public class ForecastFragment extends Fragment
     private final String TAG = this.getClass().getSimpleName();
 
     private ForecastAdapter mForecastAdapter;
+
+    private ListView mListView;
+    private int mPosition = ListView.INVALID_POSITION;
+
+    private static final String SELECTED_KEY = "selected_position";
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -107,15 +109,15 @@ public class ForecastFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // The CursorAdapter will take data from our cursor and populate the listView.
+        // The CursorAdapter will take data from our cursor and use it to populate the listView it's attached to
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_forecast, container, false);
 
-        ListView listView= (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
 
-        listView.setAdapter(mForecastAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setAdapter(mForecastAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(),
@@ -129,8 +131,20 @@ public class ForecastFragment extends Fragment
                                     WeatherEntry.buildWeatherLocationWithDate(
                                             locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
+                mPosition = position;
                 }
-            });
+        });
+
+        // If there's instance state, mine it for useful information.
+        // The end-goal here is that the user never knows that turning their device sideways
+        // does crazy lifecycle related things.  It should feel like some stuff stretched out,
+        // or magically appeared to take advantage of room, but data or place in the app was never
+        // actually *lost*.
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The listview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
         return rootView;
     }
 
@@ -138,6 +152,17 @@ public class ForecastFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(FORECAST_LOADER_ID, null, this);
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        // When no item is selected, mPosition will be set to ListView.INVALID_POSITION,
+        // so check for that before storing.
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -172,43 +197,14 @@ public class ForecastFragment extends Fragment
         weatherTask.execute(location);
     }
 
-    /**
-     * 格式化时间
-     * @param time
-     * @return
-     */
-    private String getReadableDateString (long time) {
-        // 因为API返回的是一个unix 的时间戳( 以秒为单位 )
-        // 为了将其转换为有效时间,我们需要将它转换为毫秒
-        SimpleDateFormat shortenedDareFormat = new SimpleDateFormat("EEE MMMM dd");
-        return shortenedDareFormat.format(time);
-    }
-
-    /**
-     * 显示昼夜温差
-     * @param high
-     * @param low
-     * @return
-     */
-    private String formatHighLows (double high, double low, String unitType) {
-
-        String unit = " ˚C";
-        if (unitType.endsWith(getString(R.string.pref_units_imperial))) {
-            unit = "˚F";
-            high = (high * 1.8) + 32;
-            low = (low * 1.8) + 32;
-        } else if (!unitType.endsWith(getString(R.string.pref_units_metric))) {
-            Log.d(TAG, "Unit type not found: " + unitType);
-        }
-        long roundedHigh = Math.round(high);
-        long roundedLow = Math.round(low);
-
-        String highLowStr = roundedHigh + "/" +roundedLow;
-        return highLowStr + unit;
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // This is called when a new Loader needs to be created, This
+        // fragment only uses one loader, so we don't care about checking the id.
+
+        // To only show current and future dates, filter the query to return weather only for
+        // dates after or including today.
+
         String locationSetting = Utility.getPreferredLocation(getActivity());
 
         // sort order : Ascending, by date.
@@ -226,6 +222,10 @@ public class ForecastFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
+        if (mPosition != ListView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore to, do so now.
+            mListView.smoothScrollToPosition(mPosition);
+        }
     }
 
     @Override
