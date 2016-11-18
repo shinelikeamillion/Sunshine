@@ -15,7 +15,6 @@
  */
 package com.udacity.sunshine.fragment;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import android.widget.ListView;
 
 import com.udacity.sunshine.R;
 import com.udacity.sunshine.Utility;
-import com.udacity.sunshine.activity.DetailActivity;
 import com.udacity.sunshine.adapter.ForecastAdapter;
 import com.udacity.sunshine.data.WeatherContract.LocationEntry;
 import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
@@ -51,6 +49,17 @@ public class ForecastFragment extends Fragment
     private final String TAG = this.getClass().getSimpleName();
 
     private ForecastAdapter mForecastAdapter;
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /** DetailFragmentCallback for when an item has been selected.
+         */
+        void onItemSelected(Uri dateUri);
+    }
 
     private static final int FORECAST_LOADER_ID = 0x001;
 
@@ -115,11 +124,10 @@ public class ForecastFragment extends Fragment
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
 
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(WeatherEntry.buildWeatherLocationWithDate(
-                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
-                            ));
-                    startActivity(intent);
+                    ((Callback) getActivity())
+                            .onItemSelected(
+                                    WeatherEntry.buildWeatherLocationWithDate(
+                                            locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
                 }
             });

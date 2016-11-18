@@ -12,8 +12,9 @@ import com.udacity.sunshine.R;
 import com.udacity.sunshine.Utility;
 import com.udacity.sunshine.fragment.DetailFragment;
 import com.udacity.sunshine.fragment.ForecastFragment;
+import com.udacity.sunshine.fragment.ForecastFragment.Callback;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Callback{
 
     private final String TAG = this.getClass().getSimpleName();
     private String mLocation;
@@ -61,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
             if (null != ff) {
                 ff.onLocationChanged();
             }
+
+            // on big screen
+            DetailFragment df = (DetailFragment) getSupportFragmentManager()
+                    .findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (null != df) {
+                df.onLocationChanged(location);
+            }
+            mLocation = location;
         }
     }
 
@@ -97,6 +106,28 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             Log.d(TAG, "Couldn't call " + location + ", no receiving apps installed!");
+        }
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+        if (mTwoPane) {
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, dateUri);
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .setData(dateUri);
+            startActivity(intent);
         }
     }
 }

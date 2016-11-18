@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import com.udacity.sunshine.fragment.DetailFragment;
 import com.udacity.sunshine.R;
 
+import static android.R.attr.fragment;
+
 public class DetailActivity extends AppCompatActivity {
 
     @Override
@@ -17,8 +19,19 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         if (savedInstanceState == null) {
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction
+
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(
+                    DetailFragment.DETAIL_URI,
+                    getIntent().getData());
+
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(arguments);
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.weather_detail_container, new DetailFragment())
+                    .add(R.id.weather_detail_container, detailFragment)
                     .commit();
         }
     }
