@@ -68,4 +68,7 @@
         Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%
     </string>
 
+    <!-- SyncAdapter related(关联) -->
+    <string name="sync_account_type">sunshine.udacity.com</string>
+    <string name="content_authority">com.udacity.android.shushine.app</string>
 </resources>
