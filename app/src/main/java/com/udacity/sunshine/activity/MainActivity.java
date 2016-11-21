@@ -14,6 +14,7 @@ import com.udacity.sunshine.Utility;
 import com.udacity.sunshine.fragment.DetailFragment;
 import com.udacity.sunshine.fragment.ForecastFragment;
 import com.udacity.sunshine.fragment.ForecastFragment.Callback;
+import com.udacity.sunshine.sync.SunshineSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements Callback{
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements Callback{
         ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_forecast);
         forecastFragment.setUseTodayLayout(!mTwoPane);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
 
         getSupportActionBar().setLogo(R.drawable.ic_logo);
         getSupportActionBar().setDisplayOptions(
