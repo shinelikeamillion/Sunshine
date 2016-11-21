@@ -15,10 +15,6 @@
  */
 package com.udacity.sunshine.fragment;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,7 +37,7 @@ import com.udacity.sunshine.Utility;
 import com.udacity.sunshine.adapter.ForecastAdapter;
 import com.udacity.sunshine.data.WeatherContract.LocationEntry;
 import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
-import com.udacity.sunshine.service.SunshineService;
+import com.udacity.sunshine.sync.SunshineSyncAdapter;
 
 
 public class ForecastFragment extends Fragment
@@ -209,20 +205,23 @@ public class ForecastFragment extends Fragment
 //                Utility.getPreferredLocation(getActivity()));
 //        getActivity().startService(intent);
 
-        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
-        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
-                Utility.getPreferredLocation(getActivity()));
+//        3.
+//        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+//        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+//                Utility.getPreferredLocation(getActivity()));
+//
+//        // wrap in a pending intent which only fires once.
+//        PendingIntent pi = PendingIntent.getBroadcast(getActivity(),
+//                0,
+//                alarmIntent,
+//                PendingIntent.FLAG_ONE_SHOT); // getBroadcast(context, 0, i, 0);
+//
+//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//
+//        // Set the AlarmManager to wake up the system.
+//        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 5000, pi);
 
-        // wrap in a pending intent which only fires once.
-        PendingIntent pi = PendingIntent.getBroadcast(getActivity(),
-                0,
-                alarmIntent,
-                PendingIntent.FLAG_ONE_SHOT); // getBroadcast(context, 0, i, 0);
-
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-
-        // Set the AlarmManager to wake up the system.
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 5000, pi);
+        SunshineSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override

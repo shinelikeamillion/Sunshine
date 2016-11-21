@@ -31,6 +31,10 @@
     <string name="pref_units_imperial"
             translatable="false">imperial</string>
 
+    <!-- SyncAdapter related(关联) -->
+    <string name="sync_account_type">sunshine.udacity.com</string>
+    <string name="content_authority">com.udacity.sunshine.app</string>
+
     <!-- 友好的显示日期 -->
     <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
     <string name="today">Today</string>
@@ -67,8 +71,4 @@
     <string name="format_humidity">
         Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%
     </string>
-
-    <!-- SyncAdapter related(关联) -->
-    <string name="sync_account_type">sunshine.udacity.com</string>
-    <string name="content_authority">com.udacity.android.shushine.app</string>
 </resources>
