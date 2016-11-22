@@ -127,14 +127,18 @@ public class Utility {
                 .equals(context.getString(R.string.pref_units_metric));
     }
 
-    public static String formatTemperature(Context context, double temperature, boolean isMetric) {
-        double temp;
-        if (!isMetric) {
-            temp = 9 * temperature / 5 + 32;
-        } else {
-            temp = temperature;
+    public static String formatTemperature(Context context, double temperature) {
+        // Data sorted in Celsius(摄氏度) by default. If user prefers to see in
+        // Fahrenheit(华氏温标), convert
+        // the values here.
+        String suffix = "C";
+        if (!isMetric(context)) {
+            temperature = (temperature * 1.8) + 32;
+            suffix = "F";
         }
-        return context.getString(R.string.format_temperature, temp);
+
+        // For presentation(展示), assume(假定) the user doesn't care about tenths of a degree(程度).
+        return String.format(context.getString(R.string.format_temperature), temperature);
     }
 
     public static String formatDate (long dateInMillis) {
