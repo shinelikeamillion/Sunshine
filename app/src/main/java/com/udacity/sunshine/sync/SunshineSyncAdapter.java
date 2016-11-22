@@ -370,12 +370,22 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     /** notify weather
      */
     private void notifyWeather () {
-        Context context = getContext();
-        // checking the last update and notify if it' the first of the day
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastNotificationKey = context.getString(R.string.pref_last_notification);
-        long lastSync = prefs.getLong(lastNotificationKey, 0);
 
+        Context context = getContext();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String lastNotificationKey = context.getString(R.string.pref_last_notification_key);
+        String displayNotificationsKey = context.getString(R.string.pref_enable_notification_key);
+
+        long lastSync = prefs.getLong(lastNotificationKey, 0);
+        boolean displayNotifications = prefs.getBoolean(
+                displayNotificationsKey,
+                Boolean.parseBoolean(context.getString(R.string.pref_enable_notification_default)));
+
+        // If notification not enabled, just return.
+        if (!displayNotifications) return;
+
+        // checking the last update and notify if it' the first of the day
         if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
             // Last sync was more than 1 day ago, let's send a notification with the weather.
             String locationQuery = Utility.getPreferredLocation(context);
@@ -395,6 +405,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 // show our notification
                 showWeatherNotification(context, cursor);
+                cursor.close();
 
                 // refreshing last sync
                 SharedPreferences.Editor editor = prefs.edit();
