@@ -43,16 +43,17 @@
     <!-- Date format for displaying day of week and date (i.e. Mon Jun 1) [CHAR LIMIT=20] -->
     <!-- xliff:g tag for insert data flexibly; s for string, d for int, f for float -->
     <string name="format_full_friendly_date">
-        <xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g>
+        <xliff:g id="day">%1$s</xliff:g>,
+        <xliff:g id="date">%2$s</xliff:g>
     </string>
 
     <!-- String for formatting weather-related data -->
     <!-- Temperature format[CHAR LIMIT=5] -->
     <string name="format_temperature">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0
-        <!--<xliff:g id="suffix">%2$s</xliff:g>-->
     </string>
-    
+        <!--<xliff:g id="suffix">%2$s</xliff:g>-->
+
     <!-- String for Windspeed formats -->
     <!-- Wind in mph(miles per hour) [CHAR LIMIT=25] -->
     <string name="format_wind_mph">

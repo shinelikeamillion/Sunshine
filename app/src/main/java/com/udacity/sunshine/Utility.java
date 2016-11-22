@@ -23,6 +23,7 @@ import android.text.format.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Utility {
 
@@ -56,16 +57,16 @@ public class Utility {
         if (julianDay == currentJulianDay) {
             String today = context.getString(R.string.today);
             int formatId = R.string.format_full_friendly_date;
-            return String.format(context.getString(
-                    formatId,
+            return String.format(
+                    context.getString(formatId),
                     today,
-                    getFormattedMonthDay(context, dateInMillis)));
+                    getFormattedMonthDay(context, dateInMillis));
         } else if ( julianDay < currentJulianDay + 7 ) {
             // If the input date is less than a week in the future, just return the day name.
             return getDayName(context, dateInMillis);
         } else {
             // Otherwise, use the form "Mon Jun 3"
-            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
+            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd", Locale.ENGLISH);
             return shortenedDateFormat.format(dateInMillis);
         }
     }
@@ -93,8 +94,8 @@ public class Utility {
         } else {
             Time time = new Time();
             time.setToNow();
-            // Otherwise, the format is just the day of the week (e.g "Wednesday".
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+            // Otherwise, the format is just the day of the week (e.g "Wednesday".)
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.ENGLISH);
             return dayFormat.format(dateInMillis);
         }
     }
@@ -109,8 +110,7 @@ public class Utility {
     public static String getFormattedMonthDay(Context context, long dateInMillis ) {
         Time time = new Time();
         time.setToNow();
-        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
-        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd", Locale.ENGLISH);
         String monthDayString = monthDayFormat.format(dateInMillis);
         return monthDayString;
     }
