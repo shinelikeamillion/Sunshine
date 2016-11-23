@@ -15,6 +15,7 @@
  */
 package com.udacity.sunshine.fragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,8 +42,7 @@ import com.udacity.sunshine.data.WeatherContract.WeatherEntry;
 import com.udacity.sunshine.sync.SunshineSyncAdapter;
 
 
-public class ForecastFragment extends Fragment
-        implements LoaderCallbacks<Cursor> {
+public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -183,7 +184,37 @@ public class ForecastFragment extends Fragment
             updateWeather();
             return true;
         }
+        if (id == R.id.action_map) {
+            openPreferredLocationInMap();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openPreferredLocationInMap() {
+        // Using the URI scheme for showing a location found on a map. This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
+        if (null != mForecastAdapter) {
+            Cursor cursor = mForecastAdapter.getCursor();
+            if (null != cursor) {
+
+                if (!cursor.moveToFirst()) return;
+
+                cursor.moveToPosition(0);
+                String posLat = cursor.getString(COL_COORD_LAT);
+                String posLong = cursor.getString(COL_COORD_LONG);
+                Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(geoLocation);
+
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Log.d(TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+                }
+            }
+        }
     }
 
     // since we read the location when we create the loader, all we need to do is restart things
