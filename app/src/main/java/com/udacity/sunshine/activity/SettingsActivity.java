@@ -41,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity
         // 为参数的变化设置监听
         preference.setOnPreferenceChangeListener(this);
 
-        // 用当前的值立即出发监听事件
+        // 用当前的值立即触发监听事件
         onPreferenceChange(
                 preference,
                 PreferenceManager

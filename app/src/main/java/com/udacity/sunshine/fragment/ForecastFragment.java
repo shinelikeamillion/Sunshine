@@ -217,6 +217,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
         }
     }
 
+    public void onIsMetricChanged () {
+        getLoaderManager().restartLoader(FORECAST_LOADER_ID, null, this);
+    }
+
     // since we read the location when we create the loader, all we need to do is restart things
     public void onLocationChanged () {
         updateWeather();
@@ -280,6 +284,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         mForecastAdapter.swapCursor(cursor);
+        mForecastAdapter.notifyDataSetChanged();
         if (mPosition != ListView.INVALID_POSITION) {
             // If we don't need to restart the loader, and there's a desired position to restore to, do so now.
             mListView.smoothScrollToPosition(mPosition);

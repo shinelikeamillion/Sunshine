@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements Callback{
 
     private final String TAG = this.getClass().getSimpleName();
     private String mLocation;
+    private boolean mIsMetric;
     private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
@@ -26,11 +27,12 @@ public class MainActivity extends AppCompatActivity implements Callback{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLocation = Utility.getPreferredLocation(this);
+        mIsMetric = Utility.isMetric(this);
         setContentView(R.layout.activity_main);
 
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
-            // (res/layout-sw600dp). If this view is present, then the activity should be
+            // (res/layout-land). If this view is present, then the activity should be
             // in two-pane mode.
             mTwoPane = true;
             // In two-pane mode, show the detail view in this activity by
@@ -67,21 +69,32 @@ public class MainActivity extends AppCompatActivity implements Callback{
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation(this);
+        boolean isMetric = Utility.isMetric(this);
         // update the location in our second pane using the fragment manager
+        ForecastFragment ff = (ForecastFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.fragment_forecast);
+        // on big screen
+        DetailFragment df = (DetailFragment) getSupportFragmentManager()
+                .findFragmentByTag(DETAILFRAGMENT_TAG);
         if (location != null && !location.equals(mLocation)) {
-            ForecastFragment ff =
-                    (ForecastFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
             if (null != ff) {
                 ff.onLocationChanged();
             }
 
-            // on big screen
-            DetailFragment df = (DetailFragment) getSupportFragmentManager()
-                    .findFragmentByTag(DETAILFRAGMENT_TAG);
             if (null != df) {
                 df.onLocationChanged(location);
             }
             mLocation = location;
+        }
+        if (isMetric != mIsMetric) {
+            if (null != ff) {
+                ff.onIsMetricChanged();
+            }
+
+            if (null != df) {
+                df.onLocationChanged(location);
+            }
+            mIsMetric = isMetric;
         }
     }
 

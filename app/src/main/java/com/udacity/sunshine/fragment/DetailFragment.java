@@ -177,13 +177,12 @@ public class DetailFragment extends Fragment implements LoaderCallbacks<Cursor> 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(TAG, "In onCreateLoader");
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
+        if (null != mUri) {
             // Now create and return a CursorLoader that will take care of
             // creating a Cursor for the data being displayed.
             return new CursorLoader(
                     getActivity(),
-                    intent.getData(),
+                    mUri,
                     DETAIL_COLUMNS,
                     null,
                     null,
